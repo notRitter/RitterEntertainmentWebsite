@@ -1,5 +1,11 @@
 # Website verification
 
+## GitHub Pages preview
+
+[Review the published site](https://notritter.github.io/RitterEntertainmentWebsite/). The [first GitHub Actions deployment](https://github.com/notRitter/RitterEntertainmentWebsite/actions/runs/45198490723) built and deployed commit `3eee0be` successfully.
+
+The hosted check passed 45 route and media requests, plus stylesheet and font checks. Both legacy URLs worked, a missing route returned the branded 404 with HTTP 404, and the preview presented its project-subpath canonical and search noindex metadata. In Chrome, opening `/emc` forwarded to the new game page, the game’s unlock link showed 24 rewards, and the contact link used the updated studio address.
+
 ## Content and assets
 
 - Four game pages and eight development-tool pages. Map Transform and Active Item System each link to their separate MV and MZ editions.
@@ -12,7 +18,7 @@
 
 | Check | Result |
 | --- | --- |
-| Static builds | Production root and temporary GitHub Pages subpath builds generated 19 HTML pages each. |
+| Static builds | A fresh copy of the staged files passed locked npm installation. Production root and temporary GitHub Pages subpath builds generated 19 HTML pages each. The hosted workflow repeated the subpath build on Node.js 24. |
 | Type and content checks | Astro reported zero errors, warnings, and hints. |
 | Paths and SEO | The static output checker passed for both builds. It checks local routes, anchors, asset files, image alt attributes, titles, descriptions, canonical and Open Graph URLs, sitemap entries, and deployment-specific robots metadata. |
 | External links | All 17 unique published HTTPS links returned HTTP 200 on November 23, 2026. This checks reachability of the listing, documentation, credit, and demo pages. |
