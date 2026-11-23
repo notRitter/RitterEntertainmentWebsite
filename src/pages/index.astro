@@ -1,0 +1,65 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectMedia from '../components/ProjectMedia.astro';
+import { getCatalog, projectUrl } from '../lib/catalog';
+import { sitePath, studio } from '../lib/site';
+
+const { games, tools } = await getCatalog();
+const lead = games.find((game) => game.data.featured);
+const gamePreviews = games.filter((game) => game !== lead).sort((a, b) => Number(b.data.featured) - Number(a.data.featured)).slice(0, 3);
+const toolPreviews = tools.filter((tool) => tool.data.featured).slice(0, 3);
+---
+<SiteLayout>
+  <section class="masthead" aria-labelledby="home-heading">
+    <div class="wrap masthead-grid">
+      <div class="masthead-copy">
+        <p class="eyebrow">Independent game studio</p>
+        <h1 id="home-heading">Original games. <em>Tools to build them.</em></h1>
+        <p class="masthead-summary">Ritter Entertainment creates games and develops systems for RPG Maker MV and MZ.</p>
+        <div class="actions">
+          <a class="button button-primary" href={sitePath('games/')}>Explore games</a>
+          <a class="button button-secondary" href={sitePath('tools/')}>Developer tools</a>
+        </div>
+      </div>
+      {lead && (
+        <article class="spotlight" data-accent={lead.data.accent}>
+          <ProjectMedia project={lead} eager />
+          <div class="spotlight-caption">
+            <div>
+              <div class="card-meta"><span>Featured game</span><span>{lead.data.status}</span></div>
+              <h2><a href={projectUrl(lead)}>{lead.data.title}</a></h2>
+              <p>{lead.data.summary}</p>
+            </div>
+          </div>
+        </article>
+      )}
+    </div>
+  </section>
+
+  <section class="wrap section home-games" aria-labelledby="games-heading">
+    <div class="section-head">
+      <div><h2 id="games-heading">Games</h2><p>Playable releases and projects in development.</p></div>
+      <a class="button button-secondary" href={sitePath('games/')}>Browse all games</a>
+    </div>
+    <div class="project-grid">
+      {gamePreviews.map((game) => <ProjectCard project={game} />)}
+    </div>
+  </section>
+
+  <section class="tools-band" aria-labelledby="tools-heading">
+    <div class="wrap section">
+      <div class="section-head">
+        <div><h2 id="tools-heading">Developer Tools</h2><p>Manage runtime events, stream large maps, and organize your spawn templates.</p></div>
+        <a class="button button-secondary" href={sitePath('tools/')}>See all tools</a>
+      </div>
+      <div class="project-grid tool-grid">
+        {toolPreviews.map((tool) => <ProjectCard project={tool} />)}
+      </div>
+      <div class="docs-callout">
+        <div><h3>Event Spawner &amp; Boundary documentation</h3><p>Installation, examples, and reference for RPG Maker MV and MZ.</p></div>
+        <a class="button button-secondary" href={studio.docs}>Open documentation</a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

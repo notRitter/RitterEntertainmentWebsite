@@ -1,0 +1,6 @@
+---
+import CatalogPage from '../../components/CatalogPage.astro';
+import { getCatalog } from '../../lib/catalog';
+const { tools } = await getCatalog();
+---
+<CatalogPage title="Developer Tools" summary="Plugins and companion utilities for event streaming, map editing, and game presentation in RPG Maker MV and MZ." projects={tools} tools />

@@ -1,0 +1,21 @@
+---
+import { sitePath, studio } from '../lib/site';
+---
+<footer class="site-footer">
+  <div class="wrap footer-main">
+    <div>
+      <a class="footer-wordmark" href={sitePath()}>Ritter Entertainment</a>
+      <p>Independent game development studio.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul class="footer-nav">
+        <li><a href={sitePath('games/')}>Games</a></li>
+        <li><a href={sitePath('tools/')}>Developer Tools</a></li>
+        <li><a href={studio.docs}>Documentation</a></li>
+        <li><a href={studio.store}>itch.io</a></li>
+        <li><a href={sitePath('contact/')}>Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap footer-legal"><small>{studio.copyright}</small></div>
+</footer>

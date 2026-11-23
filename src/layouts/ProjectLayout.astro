@@ -1,0 +1,86 @@
+---
+import { render } from 'astro:content';
+import { getCatalog, projectUrl, type Project } from '../lib/catalog';
+import { mediaPath, sitePath } from '../lib/site';
+import SiteLayout from './SiteLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectMedia from '../components/ProjectMedia.astro';
+
+const { project } = Astro.props as { project: Project };
+const { data } = project;
+const { Content } = await render(project);
+const catalog = await getCatalog();
+const projects = [...catalog.games, ...catalog.tools];
+const related = data.related.map((id) => {
+  const match = projects.find((entry) => entry.id === id);
+  if (!match) throw new Error(`Unknown related project "${id}" in ${project.id}`);
+  return match;
+});
+const isTool = project.collection === 'tools';
+const facts = [
+  ['Status', data.status],
+  ['Type', data.category],
+  ['Engine compatibility', isTool ? `RPG Maker ${project.data.engines.join(' and ')}` : undefined],
+  ['Platform', data.platform],
+  ['Version', isTool ? project.data.version : undefined],
+].filter(([, value]) => value);
+---
+<SiteLayout title={data.title} description={data.summary} image={data.cover} canonicalPath={projectUrl(project)}>
+  <header class="project-hero" data-accent={data.accent}>
+    <div class="wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href={sitePath(`${project.collection}/`)}>{isTool ? 'Developer Tools' : 'Games'}</a>
+        <span aria-hidden="true">/</span><span aria-current="page">{data.title}</span>
+      </nav>
+      <div class="project-hero-grid">
+        <div class="project-intro">
+          <p class="eyebrow">{isTool ? data.category : data.status}</p>
+          <h1>{data.title}</h1>
+          <p>{data.summary}</p>
+          {(data.storefronts.length > 0 || data.documentation.length > 0 || data.demos.length > 0) && (
+            <div class="actions">
+              {data.storefronts.map((link) => <a class="button button-primary" href={link.url}>{link.label}</a>)}
+              {data.documentation.map((link) => <a class="button button-secondary" href={link.url}>{link.label}</a>)}
+              {data.demos.map((link) => <a class="button button-secondary" href={link.url}>{link.label}</a>)}
+            </div>
+          )}
+        </div>
+        <ProjectMedia project={project} eager />
+      </div>
+    </div>
+  </header>
+  <div class="wrap project-content">
+    <article class="prose">
+      <Content />
+      {data.releaseNote && <section><h2>Release information</h2><p>{data.releaseNote}</p></section>}
+      {project.collection === 'games' && project.data.unlockGuide && <p><a class="button button-secondary" href={sitePath('emc-info/')}>Challenge Mode unlock guide</a></p>}
+    </article>
+    <aside class="facts" aria-label="Project details">
+      <h2>Project details</h2>
+      <dl>
+        {facts.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+      </dl>
+    </aside>
+  </div>
+  {data.gallery.length > 0 && (
+    <section class="wrap section gallery" aria-labelledby="gallery-heading">
+      <h2 id="gallery-heading">Screenshots</h2>
+      <div class="gallery-grid">
+        {data.gallery.map((image) => (
+          <figure>
+            <a href={mediaPath(image.file)} aria-label={`Open image: ${image.alt}`}>
+              <img src={mediaPath(image.file)} alt={image.alt} loading="lazy" decoding="async" />
+            </a>
+            {image.caption && <figcaption>{image.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+  {related.length > 0 && (
+    <section class="wrap section related" aria-labelledby="related-heading">
+      <h2 id="related-heading">Related projects</h2>
+      <div class="project-grid">{related.map((entry) => <ProjectCard project={entry} />)}</div>
+    </section>
+  )}
+</SiteLayout>

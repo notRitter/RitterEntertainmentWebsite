@@ -1,0 +1,18 @@
+---
+import type { Project } from '../lib/catalog';
+import { mediaPath } from '../lib/site';
+
+const { project, eager = false } = Astro.props as { project: Project; eager?: boolean };
+const { cover, accent, title, category } = project.data;
+---
+{cover ? (
+  <div class="project-media" data-accent={accent}>
+    <img src={mediaPath(cover.file)} alt={cover.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </div>
+) : (
+  <div class="project-media type-art" data-accent={accent} aria-hidden="true">
+    <div class="type-art-grid"></div>
+    <div class="type-art-orbit"></div>
+    <div class="type-art-text"><span>{category}</span><strong>{title}</strong></div>
+  </div>
+)}

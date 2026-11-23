@@ -1,0 +1,16 @@
+---
+import { sitePath } from '../lib/site';
+const destination = sitePath('games/endless-math-challenge/');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Endless Math Challenge | Ritter Entertainment</title>
+    <link rel="canonical" href={new URL(destination, Astro.site)} />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+  </head>
+  <body><main><p>Continue to <a href={destination}>Endless Math Challenge</a>.</p></main></body>
+</html>

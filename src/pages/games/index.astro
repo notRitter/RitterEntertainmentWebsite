@@ -1,0 +1,6 @@
+---
+import CatalogPage from '../../components/CatalogPage.astro';
+import { getCatalog } from '../../lib/catalog';
+const { games } = await getCatalog();
+---
+<CatalogPage title="Games" summary="Explore the studio’s multiplayer action RPG, strategy projects, and playable arcade games." projects={games} />

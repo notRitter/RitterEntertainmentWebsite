@@ -1,0 +1,57 @@
+---
+import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/barlow-condensed/latin-800.css';
+import '@fontsource-variable/space-grotesk';
+import '../styles/site.css';
+import { mediaPath, studio } from '../lib/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: { file: string; alt: string };
+  canonicalPath?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = studio.description,
+  image = { file: 'ritter-social.jpg', alt: studio.title },
+  canonicalPath = Astro.url.pathname,
+  noIndex = false,
+} = Astro.props;
+const origin = Astro.site!;
+const canonical = new URL(canonicalPath, origin);
+const socialImage = new URL(mediaPath(image.file), origin);
+const pageTitle = title ? `${title} | ${studio.title}` : `${studio.title} | Independent Game Studio`;
+const isPreview = origin.hostname.endsWith('.github.io');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b101a" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href={mediaPath('ritter-icon.png')} />
+    {(noIndex || isPreview) && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={studio.title} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={image.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header current={Astro.url.pathname} />
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer />
+  </body>
+</html>

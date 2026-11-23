@@ -1,0 +1,12 @@
+---
+import { getCatalog } from '../../lib/catalog';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+export async function getStaticPaths() {
+  const { games } = await getCatalog();
+  return games.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+---
+<ProjectLayout project={project} />

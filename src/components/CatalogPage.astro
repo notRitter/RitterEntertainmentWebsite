@@ -1,0 +1,27 @@
+---
+import type { Project } from '../lib/catalog';
+import { studio } from '../lib/site';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ProjectCard from './ProjectCard.astro';
+
+const { title, summary, projects, tools = false } = Astro.props as {
+  title: string;
+  summary: string;
+  projects: Project[];
+  tools?: boolean;
+};
+---
+<SiteLayout title={title} description={summary}>
+  <header class="page-intro">
+    <div class="wrap">
+      <h1>{title}</h1>
+      <p>{summary}</p>
+      {tools && <a class="button button-secondary" href={studio.docs}>Read the Spawner documentation</a>}
+    </div>
+  </header>
+  <section class="wrap section catalog-section" aria-label={`${title} catalog`}>
+    <div class:list={['project-grid', { 'tool-grid': tools }]}>
+      {projects.map((project) => <ProjectCard project={project} heading="h2" />)}
+    </div>
+  </section>
+</SiteLayout>

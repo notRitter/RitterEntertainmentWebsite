@@ -1,0 +1,25 @@
+---
+import { getEntry, render } from 'astro:content';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { sitePath } from '../lib/site';
+
+const guide = await getEntry('guides', 'endless-math-unlocks');
+if (!guide) throw new Error('Missing Endless Math Challenge unlock guide');
+const { Content } = await render(guide);
+---
+<SiteLayout title={guide.data.title} description={guide.data.summary}>
+  <header class="page-intro">
+    <div class="wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href={sitePath('games/endless-math-challenge/')}>Endless Math Challenge</a>
+        <span aria-hidden="true">/</span><span aria-current="page">Unlocks</span>
+      </nav>
+      <h1>{guide.data.title}</h1>
+      <p>{guide.data.summary}</p>
+    </div>
+  </header>
+  <article class="wrap section prose guide">
+    <Content />
+    <a class="button button-secondary" href={sitePath('games/endless-math-challenge/')}>Back to Endless Math Challenge</a>
+  </article>
+</SiteLayout>

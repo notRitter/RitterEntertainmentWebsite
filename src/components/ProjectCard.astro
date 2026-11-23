@@ -1,0 +1,17 @@
+---
+import { projectUrl, type Project } from '../lib/catalog';
+import ProjectMedia from './ProjectMedia.astro';
+
+const { project, heading = 'h3' } = Astro.props as { project: Project; heading?: 'h2' | 'h3' };
+const Heading = heading;
+const { title, summary, status, category } = project.data;
+const tag = project.collection === 'games' ? status : `RPG Maker ${project.data.engines.join(' + ')}`;
+---
+<article class="project-card" data-accent={project.data.accent}>
+  <ProjectMedia project={project} />
+  <div class="card-body">
+    <div class="card-meta"><span>{category}</span><span>{tag}</span></div>
+    <Heading><a href={projectUrl(project)}>{title}</a></Heading>
+    <p>{summary}</p>
+  </div>
+</article>

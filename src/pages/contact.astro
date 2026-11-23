@@ -1,0 +1,27 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { studio } from '../lib/site';
+---
+<SiteLayout title="Contact" description="Contact Ritter Entertainment LLC about the studio, its games, or its development tools.">
+  <header class="page-intro">
+    <div class="wrap">
+      <h1>Contact</h1>
+      <p>Get in touch with Ritter Entertainment LLC.</p>
+    </div>
+  </header>
+  <div class="wrap section contact-grid">
+    <section class="contact-card">
+      <h2>Studio inquiries</h2>
+      <p>For press, business, and general questions, email the studio.</p>
+      <a class="contact-email" href={`mailto:${studio.email}`}>{studio.email}</a>
+    </section>
+    <section class="contact-card">
+      <h2>Product support</h2>
+      <p>Post in the relevant product’s itch.io community. Include the RPG Maker and plugin versions, steps to reproduce the issue, and any relevant screenshots.</p>
+      <div class="actions">
+        <a class="button button-primary" href={studio.store}>Find your product on itch.io</a>
+        <a class="button button-secondary" href={studio.docs}>Read documentation</a>
+      </div>
+    </section>
+  </div>
+</SiteLayout>

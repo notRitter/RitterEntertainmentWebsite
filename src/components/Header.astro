@@ -1,0 +1,26 @@
+---
+import { mediaPath, sitePath, studio } from '../lib/site';
+
+const { current } = Astro.props as { current: string };
+const items = [
+  { label: 'Games', href: sitePath('games/') },
+  { label: 'Developer Tools', href: sitePath('tools/') },
+  { label: 'Documentation', href: studio.docs },
+  { label: 'Contact', href: sitePath('contact/') },
+];
+const normalize = (path: string) => path.replace(/\/$/, '');
+---
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href={sitePath()} aria-label="Ritter Entertainment home" aria-current={normalize(current) === normalize(sitePath()) ? 'page' : undefined}>
+      <img src={mediaPath('ritter-logo.webp')} alt="Ritter Entertainment" width="327" height="151" />
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="site-nav">
+        {items.map(({ label, href }) => (
+          <li><a href={href} aria-current={normalize(current) === normalize(href) ? 'page' : undefined} class:list={{ 'nav-section': current.startsWith(href) }}>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

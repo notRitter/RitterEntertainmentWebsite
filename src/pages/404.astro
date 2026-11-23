@@ -1,0 +1,17 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { sitePath } from '../lib/site';
+---
+<SiteLayout title="Page not found" description="Find your way back to Ritter Entertainment’s games and developer tools." canonicalPath={sitePath('404.html')} noIndex>
+  <header class="page-intro">
+    <div class="wrap">
+      <p class="eyebrow">Error 404</p>
+      <h1>Page not found</h1>
+      <p>The address may have changed. You can find our games and tools in the catalog.</p>
+      <div class="actions">
+        <a class="button button-primary" href={sitePath()}>Return home</a>
+        <a class="button button-secondary" href={sitePath('tools/')}>Browse tools</a>
+      </div>
+    </div>
+  </header>
+</SiteLayout>
